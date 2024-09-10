@@ -41,4 +41,5 @@ rtos_pro\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers
 rtos_pro\main.o: ../Core/Inc/i2c.h
 rtos_pro\main.o: ../Core/Inc/usart.h
 rtos_pro\main.o: ../Core/Inc/gpio.h
-rtos_pro\main.o: ..\Drivers\MyMCU-F103\driver_led.h
+rtos_pro\main.o: ../Drivers/MyMCU-F103/driver_led.h
+rtos_pro\main.o: ../Drivers/MyMCU-F103/driver_oled.h

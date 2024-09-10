@@ -25,51 +25,53 @@
 
 //c
 #include <string.h>
+#include <stdlib.h>
 #include "stdio.h"
 
 extern osEventFlagsId_t EventGroupHandle;
 extern osMessageQueueId_t Q_DataHandle;
-
-
-
+extern osTimerId_t Ti_SensorHandle;
 
 void F_Sensor(void *argument)
 {
-
-	SensorData data;
-	uint8_t timeout;
 	
-	osStatus_t status; // 是否成功
+	osTimerStart (Ti_SensorHandle, 2000);  //定时器1以50个tick周期运行
 	
     for(;;)
     {
-		timeout = 3; // 每次循环重置 timeout 计数器
-		data.hum=0;
-		data.temp=0;
+	
+		osEventFlagsWait(
+			EventGroupHandle, 
+			SENSOR_UPDATE_EVENT, 
+			osFlagsWaitAny, 
+			osWaitForever);
 		
-		while(--timeout>0)
+		SensorData Data;
+		Data.hum=0;
+		Data.temp=0;
+		
+		//printf("123");
+		int times = 3;
+		for(;times>0;times--)
 		{	
 			//读取数据
-			DHT11_Read(&data.hum,&data.temp);	
-			//printf("%d,%d\n",data.hum,data.temp);
-			
-			osDelay(pdMS_TO_TICKS(100)); // 使用非阻塞延时代替
+			DHT11_Read(&Data.hum,&Data.temp);	
+
+					
 		}
-		
-		//将读取的数据发送给数据队列
-		status = osMessageQueuePut(Q_DataHandle, &data, 0U, osWaitForever);	
-		if(status == osOK)
-		{
-			// 设置事件位，通知OLED任务和云平台上传任务
-			osEventFlagsSet(EventGroupHandle, TEMP_HUMIDITY_BIT);			
-		}else
-		{
-			printf("put data error\n");
-		}		
-        // 延迟一段时间
-        osDelay(pdMS_TO_TICKS(300));  // 每2秒采集一次		            
+		osMessageQueuePut(Q_DataHandle, &Data, 0U, osWaitForever);
+		osMessageQueuePut(Q_DataHandle, &Data, 0U, osWaitForever);
+
+		// 设置普通温湿度更新标志
+		osEventFlagsSet(EventGroupHandle, TEMP_HUMIDITY_BIT);				          
     }
 }
 
+
+void Cb_Sensor(void *argument)
+{
+	osEventFlagsSet(EventGroupHandle, SENSOR_UPDATE_EVENT);
+
+}
 
 

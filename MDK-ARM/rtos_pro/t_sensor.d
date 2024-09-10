@@ -1,5 +1,5 @@
 rtos_pro\t_sensor.o: ..\rtos\Src\T_Sensor.c
-rtos_pro\t_sensor.o: ..\rtos\Inc\T_Sensor.h
+rtos_pro\t_sensor.o: ../rtos/Inc/T_Sensor.h
 rtos_pro\t_sensor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 rtos_pro\t_sensor.o: ../Core/Inc/stm32f1xx_hal_conf.h
 rtos_pro\t_sensor.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h
@@ -44,10 +44,11 @@ rtos_pro\t_sensor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_gr
 rtos_pro\t_sensor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 rtos_pro\t_sensor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 rtos_pro\t_sensor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
-rtos_pro\t_sensor.o: ..\Drivers\MyMCU-F103\driver_uart.h
-rtos_pro\t_sensor.o: ..\Drivers\MyMCU-F103\driver_dht11.h
-rtos_pro\t_sensor.o: ..\Drivers\MyMCU-F103\driver_timer.h
-rtos_pro\t_sensor.o: ..\Drivers\NET\onenet.h
-rtos_pro\t_sensor.o: ..\Drivers\NET\esp8266.h
+rtos_pro\t_sensor.o: ../Drivers/MyMCU-F103/driver_uart.h
+rtos_pro\t_sensor.o: ../Drivers/MyMCU-F103/driver_dht11.h
+rtos_pro\t_sensor.o: ../Drivers/MyMCU-F103/driver_timer.h
+rtos_pro\t_sensor.o: ../Drivers/NET/onenet.h
+rtos_pro\t_sensor.o: ../Drivers/NET/esp8266.h
 rtos_pro\t_sensor.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\string.h
+rtos_pro\t_sensor.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdlib.h
 rtos_pro\t_sensor.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdio.h

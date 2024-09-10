@@ -36,32 +36,30 @@ extern osMessageQueueId_t Q_DataHandle;
 
 void F_OLED(void *argument)
 {
-	osStatus_t status;
+	//osStatus_t status;
+	SensorData data;
+	
     for(;;)
     {
 		 
 		//等待事件
         EventBits_t uxBits = osEventFlagsWait(
 			EventGroupHandle,
-			LED_UPDATE_BIT | TEMP_HUMIDITY_BIT, 
+			TEMP_HUMIDITY_BIT | LED_UPDATE_BIT, 
 			osFlagsWaitAny, 
 			osWaitForever);
 		
-        if (uxBits & TEMP_HUMIDITY_BIT) {
-			SensorData data;
-            status = osMessageQueueGet(Q_DataHandle, &data, NULL, osWaitForever);
-			if(status == osOK)
-			{
-				//printf("%d,%d",data.temp, data.hum);
-				//刷新数据
-				Refresh_Data(data.temp, data.hum);				
-			}else
-			{
-				printf("display error");
-			}
-        }
-		
+		if (uxBits & TEMP_HUMIDITY_BIT)
+		{	
+			osMessageQueueGet(Q_DataHandle, &data, NULL, osWaitForever);
+			//printf("%d,%d",data.temp, data.hum);
+		}
+
+         Refresh_Data(data.temp, data.hum); // 刷新 OLED 数据
         
+		
+		osDelay(pdMS_TO_TICKS(10));  // 正常更新，每2000ms 更新一次			
+		    
     }
 }
 

@@ -97,6 +97,7 @@ _Bool ESP8266_WaitRecive(void)
 
 }
 
+
 //==========================================================
 //	函数名称：	ESP8266_SendCmd
 //
@@ -209,6 +210,8 @@ unsigned char *ESP8266_GetIPD(unsigned short timeOut)
 
 }
 
+
+
 //==========================================================
 //	函数名称：	ESP8266_Init
 //
@@ -251,55 +254,7 @@ void ESP8266_Init(void)
 	OLED_PrintString(0, 0, "ESP8266 Init OK");
 	 mdelay(500);  // 强制让出时间片
 	
-//	OLED_Clear();
-//	ESP8266_Clear();
-//	
-//    printf("1. AT\r\n");
-//    OLED_PrintString(0,0,"1.AT...");  //位置 消息 字体
-//    if (ESP8266_SendCmd("AT\r\n", "OK") == 0) {
-//        OLED_PrintString(0,8,"AT OK");
-//    } else {
-//        OLED_PrintString(0,8,"AT FAIL");
-//    }
-//    mdelay(300);
 
-//    
-//    printf("2. CWMODE\r\n");
-//    OLED_PrintString(0,2,"2.CWMODE...");  
-//    if (ESP8266_SendCmd("AT+CWMODE=1\r\n", "OK") == 0) {
-//		
-//        OLED_PrintString(0,10,"CWMODE OK");
-//    } else {
-//        OLED_PrintString(0,10,"CWMODE FAIL");
-//    }
-
-//    mdelay(300);
-//    
-//    printf("3. AT+CWDHCP\r\n");
-//    OLED_PrintString(0,4,"3.AT+CWDHCP...");  
-//    if (ESP8266_SendCmd("AT+CWDHCP=1,1\r\n", "OK") == 0) {
-//        OLED_PrintString(0,12,"CWDHCP OK");
-//    } else {
-//        OLED_PrintString(0,12,"CWDHCP FAIL");
-//    }
-
-//    mdelay(300);
-
-//    printf("4. CWJAP\r\n");
-//    OLED_PrintString(0,6,"4.CWJAP...");  
-//    if (ESP8266_SendCmd(ESP8266_WIFI_INFO, "GOT IP") == 0) {
-//        OLED_PrintString(0,14,"CWJAP OK");
-//    } else {
-//        OLED_PrintString(0,14,"CWJAP FAIL");
-//    }
-
-//    mdelay(300);
-
-//    printf("5. ESP8266 Init OK\r\n");
-//    OLED_Clear();
-//    OLED_PrintString(0,0,"ESP8266 Init OK");  
-//    mdelay(300);
-//	
 
 }
 

@@ -1,5 +1,5 @@
 rtos_pro\t_led.o: ..\rtos\Src\T_LED.c
-rtos_pro\t_led.o: ..\rtos\Inc\T_LED.h
+rtos_pro\t_led.o: ../rtos/Inc/T_LED.h
 rtos_pro\t_led.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\string.h
 rtos_pro\t_led.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdio.h
 rtos_pro\t_led.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
@@ -46,5 +46,5 @@ rtos_pro\t_led.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_group
 rtos_pro\t_led.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 rtos_pro\t_led.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 rtos_pro\t_led.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
-rtos_pro\t_led.o: ..\Drivers\MyMCU-F103\driver_uart.h
-rtos_pro\t_led.o: ..\Drivers\MyMCU-F103\driver_led.h
+rtos_pro\t_led.o: ../Drivers/MyMCU-F103/driver_uart.h
+rtos_pro\t_led.o: ../Drivers/MyMCU-F103/driver_led.h

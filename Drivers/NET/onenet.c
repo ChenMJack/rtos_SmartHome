@@ -38,6 +38,16 @@
 #include "driver_timer.h"
 #include "driver_led.h"
 
+//rtos
+#include "cmsis_os.h"
+#include "FreeRTOS.h"                   // ARM.FreeRTOS::RTOS:Core
+#include "task.h"                       // ARM.FreeRTOS::RTOS:Core
+#include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
+#include "semphr.h"   
+
+//Task
+#include "T_LED.h"
+
 //C库
 #include <string.h>
 #include <stdio.h>
@@ -60,7 +70,8 @@ char key[48];
 
 
 extern unsigned char esp8266_buf[512];
-
+extern osEventFlagsId_t EventGroupHandle;
+extern osMessageQueueId_t Q_DataHandle;
 
 /*
 ************************************************************
@@ -215,6 +226,7 @@ static unsigned char OneNET_Authorization(char *ver, char *res, unsigned int et,
 //----------------------------------------------------将Base64编码结果进行URL编码---------------------------------------------------
 	OTA_UrlEncode(sign_buf);
 	//printf( "sign_buf: %s\r\n", sign_buf);
+	//printf("111");			
 	
 //----------------------------------------------------计算Token--------------------------------------------------------------------
 	if(flag)
@@ -343,16 +355,20 @@ _Bool OneNet_DevLink(void)
 	printf("OneNET_DevLink\r\n"
 			"NAME: %s,	PROID: %s,	KEY:%s\r\n"
                         , DEVICE_NAME, PROID, authorization_buf);
-	
+	//printf("00");
 	if(MQTT_PacketConnect(PROID, authorization_buf, DEVICE_NAME, 256, 1, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
 	{
 		ESP8266_SendData(mqttPacket._data, mqttPacket._len);			//上传平台
+		//printf("????");
 		
 		dataPtr = ESP8266_GetIPD(250);									//等待平台响应
+		//printf("????");
 		if(dataPtr != NULL)
 		{
+			//printf("????");
 			if(MQTT_UnPacketRecv(dataPtr) == MQTT_PKT_CONNACK)
 			{
+				//printf("????");
 				switch(MQTT_UnPacketConnectAck(dataPtr))
 				{
 					case 0:printf( "Tips:	连接成功\r\n");status = 0;break;
@@ -536,9 +552,9 @@ void OneNet_RevPro(unsigned char *cmd)
 	
 	short result = 0;
 
-	char *dataPtr = NULL;
-	char numBuf[10];
-	int num = 0;
+	//char *dataPtr = NULL;
+	//char numBuf[10];
+	//int num = 0;
 	
 	
 	cJSON *raw_json,*params_json,*led_json ;
@@ -557,7 +573,7 @@ void OneNet_RevPro(unsigned char *cmd)
 		
 			if(result == 0)
 			{
-				char *data_ptr = NULL;
+				//char *data_ptr = NULL;
 				
 				printf( "topic: %s, topic_len: %d, payload: %s, payload_len: %d\r\n",
 																	cmdid_topic, topic_len, req_payload, req_len);
@@ -571,10 +587,17 @@ void OneNet_RevPro(unsigned char *cmd)
 				
 				if(led_json != NULL)
 				{
+					//printf("LED command received, current status: %d, new status: %d\r\n", led_info.Led_Status, led_json->type);
 					//根据取值执行下一步操作 例如开灯 -> 以后可以开舵机等等
-					if(led_json->type == cJSON_True) Led_Control(LED_GREEN, 1);
-					else Led_Control(LED_GREEN, 0);
+					if(led_json->type != led_info.Led_Status)
+					{
+						osEventFlagsSet(EventGroupHandle, LED_UPDATE_BIT);	
+						//printf("ok");
+					}	
+														
 				}
+				
+
 				
 				//操作完之后就需要删除cjson  因为cjon需要大量的堆
 				cJSON_Delete(raw_json);
@@ -597,6 +620,7 @@ void OneNet_RevPro(unsigned char *cmd)
 //				}
 			}
 			
+			
 		case MQTT_PKT_PUBACK:														//发送Publish消息，平台回复的Ack
 		
 			if(MQTT_UnPacketPublishAck(cmd) == 0)
@@ -614,6 +638,7 @@ void OneNet_RevPro(unsigned char *cmd)
 		break;
 		
 		default:
+			 printf("Received unknown packet type: %d\r\n", type);
 			result = -1;
 		break;
 	}

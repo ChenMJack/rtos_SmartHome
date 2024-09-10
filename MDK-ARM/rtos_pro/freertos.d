@@ -43,9 +43,10 @@ rtos_pro\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cm
 rtos_pro\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 rtos_pro\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 rtos_pro\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
-rtos_pro\freertos.o: ..\rtos\Inc\T_Wifi.h
-rtos_pro\freertos.o: ..\rtos\Inc\T_Sensor.h
-rtos_pro\freertos.o: ..\rtos\Inc\T_LED.h
-rtos_pro\freertos.o: ..\rtos\Inc\T_OLED.h
-rtos_pro\freertos.o: ..\rtos\Inc\T_CloudUpload.h
-rtos_pro\freertos.o: ..\Drivers\MyMCU-F103\driver_oled.h
+rtos_pro\freertos.o: ../rtos/Inc/T_Wifi.h
+rtos_pro\freertos.o: ../rtos/Inc/T_Sensor.h
+rtos_pro\freertos.o: ../rtos/Inc/T_LED.h
+rtos_pro\freertos.o: ../rtos/Inc/T_OLED.h
+rtos_pro\freertos.o: ../rtos/Inc/T_CloudUpload.h
+rtos_pro\freertos.o: ../rtos/Inc/T_CloudDownload.h
+rtos_pro\freertos.o: ../Drivers/MyMCU-F103/driver_oled.h

@@ -31,6 +31,6 @@ rtos_pro\hmac_sha1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 rtos_pro\hmac_sha1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 rtos_pro\hmac_sha1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 rtos_pro\hmac_sha1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-rtos_pro\hmac_sha1.o: ..\Drivers\MyMCU-F103\driver_uart.h
+rtos_pro\hmac_sha1.o: ../Drivers/MyMCU-F103/driver_uart.h
 rtos_pro\hmac_sha1.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdlib.h
 rtos_pro\hmac_sha1.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdio.h

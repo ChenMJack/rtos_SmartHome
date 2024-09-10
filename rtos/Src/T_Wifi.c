@@ -66,7 +66,7 @@ void ConnectNet(void)
 	while(OneNet_DevLink())			
 		mdelay(500);
 		
-	
+	//printf("1112");
 	//Subscribe Topic
 	OneNET_Subscribe();	
 	Display_Init();

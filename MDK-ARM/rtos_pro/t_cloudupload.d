@@ -1,7 +1,7 @@
 rtos_pro\t_cloudupload.o: ..\rtos\Src\T_CloudUpload.c
-rtos_pro\t_cloudupload.o: ..\rtos\Inc\T_CloudUpload.h
-rtos_pro\t_cloudupload.o: ..\rtos\Inc\T_Sensor.h
-rtos_pro\t_cloudupload.o: ..\rtos\Inc\T_LED.h
+rtos_pro\t_cloudupload.o: ../rtos/Inc/T_CloudUpload.h
+rtos_pro\t_cloudupload.o: ../rtos/Inc/T_Sensor.h
+rtos_pro\t_cloudupload.o: ../rtos/Inc/T_LED.h
 rtos_pro\t_cloudupload.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\string.h
 rtos_pro\t_cloudupload.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdio.h
 rtos_pro\t_cloudupload.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
@@ -48,9 +48,9 @@ rtos_pro\t_cloudupload.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.
 rtos_pro\t_cloudupload.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 rtos_pro\t_cloudupload.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 rtos_pro\t_cloudupload.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-rtos_pro\t_cloudupload.o: ..\Drivers\NET\esp8266.h
-rtos_pro\t_cloudupload.o: ..\Drivers\MyMCU-F103\driver_uart.h
-rtos_pro\t_cloudupload.o: ..\Drivers\MyMCU-F103\driver_oled.h
-rtos_pro\t_cloudupload.o: ..\Drivers\MyMCU-F103\driver_timer.h
-rtos_pro\t_cloudupload.o: ..\Drivers\MyMCU-F103\driver_led.h
-rtos_pro\t_cloudupload.o: ..\Drivers\NET\onenet.h
+rtos_pro\t_cloudupload.o: ../Drivers/NET/esp8266.h
+rtos_pro\t_cloudupload.o: ../Drivers/MyMCU-F103/driver_uart.h
+rtos_pro\t_cloudupload.o: ../Drivers/MyMCU-F103/driver_oled.h
+rtos_pro\t_cloudupload.o: ../Drivers/MyMCU-F103/driver_timer.h
+rtos_pro\t_cloudupload.o: ../Drivers/MyMCU-F103/driver_led.h
+rtos_pro\t_cloudupload.o: ../Drivers/NET/onenet.h

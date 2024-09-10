@@ -37,28 +37,35 @@ int temp,hum;
 void F_CloudUpload(void *argument)
 {
 	
+	//osStatus_t status; // 是否成功	
+	
+	
     for(;;)
     {
+		
         // 等待LED或温湿度更新事件
 		EventBits_t uxBits = osEventFlagsWait(
 			EventGroupHandle, 
-			LED_UPDATE_BIT | TEMP_HUMIDITY_BIT, 
+			 TEMP_HUMIDITY_BIT | LED_UPDATE_BIT, 
 			osFlagsWaitAny, 
 			osWaitForever);		
-        
-		//提取数据
-        if (uxBits & TEMP_HUMIDITY_BIT) {
-            SensorData data;
-            osMessageQueueGet(Q_DataHandle, &data, NULL, osWaitForever);
-			temp = data.temp;
-			hum = data.hum;
-			
-        }	
 		
-		//发送数据到云平台
+		SensorData data;
+
+		temp = data.temp;
+		hum = data.hum;				
+		
+		if (uxBits & TEMP_HUMIDITY_BIT)
+		{	
+			osMessageQueueGet(Q_DataHandle, &data, NULL, osWaitForever);
+			//printf("%d,%d",data.temp, data.hum);
+		}		
+		
+		//printf("%d,%d",data.temp, data.hum);
+		
 		OneNet_SendData();	
 		ESP8266_Clear();
-
-		
+		osDelay(pdMS_TO_TICKS(1500));	// 正常情况下的上传间隔	
+	
     }
 }

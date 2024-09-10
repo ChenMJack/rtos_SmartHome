@@ -22,6 +22,17 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+//rtos
+#include "cmsis_os.h"
+#include "FreeRTOS.h"                   // ARM.FreeRTOS::RTOS:Core
+#include "task.h"                       // ARM.FreeRTOS::RTOS:Core
+#include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
+#include "semphr.h"  
+
+//Task
+#include "T_LED.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,7 +52,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+extern osEventFlagsId_t EventGroupHandle;
+extern osMessageQueueId_t Q_DataHandle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -201,6 +213,22 @@ void USART2_IRQHandler(void)
   /* USER CODE BEGIN USART2_IRQn 1 */
 
   /* USER CODE END USART2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+    if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_RESET) { // Check if pin is low
+        osEventFlagsSet(EventGroupHandle, LED_UPDATE_BIT);
+    }
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

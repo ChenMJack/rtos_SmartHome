@@ -37,7 +37,7 @@
 #include "T_LED.h"
 #include "T_OLED.h"
 #include "T_CloudUpload.h"
-
+#include "T_CloudDownload.h"
 
 //MCU Driver
 #include "driver_oled.h"
@@ -82,7 +82,7 @@ const osThreadAttr_t T_Wifi_attributes = {
   .cb_size = sizeof(T_WifiControlBlock),
   .stack_mem = &T_WifiBuffer[0],
   .stack_size = sizeof(T_WifiBuffer),
-  .priority = (osPriority_t) osPriorityAboveNormal, // > normal
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 
 //	CloudUpload
@@ -95,7 +95,20 @@ const osThreadAttr_t T_CloudUpload_attributes = {
   .cb_size = sizeof(T_CloudUploadControlBlock),
   .stack_mem = &T_CloudUploadBuffer[0],
   .stack_size = sizeof(T_CloudUploadBuffer),
-  .priority = (osPriority_t) osPriorityNormal1, // > no
+  .priority = (osPriority_t) osPriorityNormal, 
+};
+
+//	CloudDownload
+osThreadId_t T_CloudDownloadHandle;
+uint32_t T_CloudDownloadBuffer[ 512 ];
+osStaticThreadDef_t T_CloudDownloadControlBlock;
+const osThreadAttr_t T_CloudDownload_attributes = {
+  .name = "T_CloudDownload",
+  .cb_mem = &T_CloudDownloadControlBlock,
+  .cb_size = sizeof(T_CloudDownloadControlBlock),
+  .stack_mem = &T_CloudDownloadBuffer[0],
+  .stack_size = sizeof(T_CloudDownloadBuffer),
+  .priority = (osPriority_t) osPriorityNormal1, 
 };
 
 
@@ -109,7 +122,7 @@ const osThreadAttr_t T_Sensor_attributes = {
   .cb_size = sizeof(T_SensorControlBlock),
   .stack_mem = &T_SensorBuffer[0],
   .stack_size = sizeof(T_SensorBuffer),
-  .priority = (osPriority_t) osPriorityNormal1,  // > no
+  .priority = (osPriority_t) osPriorityNormal,  
 };
 
 //	OLED
@@ -122,7 +135,7 @@ const osThreadAttr_t T_OLED_attributes = {
   .cb_size = sizeof(T_OLEDControlBlock),
   .stack_mem = &T_OLEDBuffer[0],
   .stack_size = sizeof(T_OLEDBuffer),
-  .priority = (osPriority_t) osPriorityNormal1,  // > no
+  .priority = (osPriority_t) osPriorityNormal, 
 };
 
 
@@ -136,7 +149,7 @@ const osThreadAttr_t T_LED_attributes = {
   .cb_size = sizeof(T_LEDControlBlock),
   .stack_mem = &T_LEDBuffer[0],
   .stack_size = sizeof(T_LEDBuffer),
-  .priority = (osPriority_t) osPriorityNormal2,    // > no1
+  .priority = (osPriority_t) osPriorityNormal2,  
 };
 
 // Q_Data
@@ -165,23 +178,33 @@ const osMessageQueueAttr_t Q_Data_attributes = {
 
 
 // M_WIFI
-//osMutexId_t M_WifiHandle;
-//osStaticMutexDef_t M_WifiControlBlock;
-//const osMutexAttr_t M_Wifi_attributes = {
-//  .name = "M_Wifi",
-//  .cb_mem = &M_WifiControlBlock,
-//  .cb_size = sizeof(M_WifiControlBlock),
-//};
-
-
-// Ti_WifiCheck
-osTimerId_t Ti_WifiCheckHandle;
-osStaticTimerDef_t Ti_WifiCheckBlock;
-const osTimerAttr_t Ti_WifiCheck_attributes = {
-  .name = "Ti_WifiCheck",
-  .cb_mem = &Ti_WifiCheckBlock,
-  .cb_size = sizeof(Ti_WifiCheckBlock),
+osMutexId_t M_dataHandle;
+osStaticMutexDef_t M_dataControlBlock;
+const osMutexAttr_t M_data_attributes = {
+  .name = "M_data",
+  .cb_mem = &M_dataControlBlock,
+  .cb_size = sizeof(M_dataControlBlock),
 };
+
+
+// Ti_WifiDown
+osTimerId_t Ti_WifiDownHandle;
+osStaticTimerDef_t Ti_WifiDownBlock;
+const osTimerAttr_t Ti_WifiDown_attributes = {
+  .name = "Ti_WifiDown",
+  .cb_mem = &Ti_WifiDownBlock,
+  .cb_size = sizeof(Ti_WifiDownBlock),
+};
+
+// Ti_Sensor
+osTimerId_t Ti_SensorHandle;
+osStaticTimerDef_t Ti_SensorBlock;
+const osTimerAttr_t Ti_Sensor_attributes = {
+  .name = "Ti_Sensor",
+  .cb_mem = &Ti_SensorBlock,
+  .cb_size = sizeof(Ti_SensorBlock),
+};
+
 
 // Binary Source
 //osSemaphoreId_t BS_ResourceHandle;
@@ -260,18 +283,21 @@ void MX_FREERTOS_Init(void) {
 	T_WifiHandle = osThreadNew(F_Wifi, NULL, &T_Wifi_attributes);
 	T_SensorHandle = osThreadNew(F_Sensor, NULL, &T_Sensor_attributes);
 	T_OLEDHandle = osThreadNew(F_OLED, NULL, &T_OLED_attributes);
-	//T_LEDHandle = osThreadNew(F_LED, NULL, &T_LED_attributes);
+	T_LEDHandle = osThreadNew(F_LED, NULL, &T_LED_attributes);
 	T_CloudUploadHandle = osThreadNew(F_CloudUpload, NULL, &T_CloudUpload_attributes);
+	T_CloudDownloadHandle = osThreadNew(F_CloudDownload, NULL, &T_CloudDownload_attributes);
 
   // Create Queue
 	Q_DataHandle = osMessageQueueNew (MAX_QUEUE_SIZE, SENSOR_DATA_SIZE, &Q_Data_attributes);
 	//Q_CloudHandle = osMessageQueueNew (5, sizeof(uint16_t), &Q_Cloud_attributes);
   
   // Create Mutex
-	//M_WifiHandle = osMutexNew(&M_Wifi_attributes);
+	M_dataHandle = osMutexNew(&M_data_attributes);
 	
   // Create Timer
-	//Ti_WifiCheckHandle = osTimerNew(Cb_WifiCheck, osTimerPeriodic, NULL, &Ti_WifiCheck_attributes);
+	Ti_WifiDownHandle = osTimerNew(Cb_WifiDown, osTimerPeriodic, NULL, &Ti_WifiDown_attributes);
+	Ti_SensorHandle = osTimerNew(Cb_Sensor, osTimerPeriodic, NULL, &Ti_Sensor_attributes);
+
 
    // Create EventGroup
     EventGroupHandle = osEventFlagsNew(&EventGroup_attributes);

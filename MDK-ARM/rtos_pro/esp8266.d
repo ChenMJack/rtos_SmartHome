@@ -29,8 +29,8 @@ rtos_pro\esp8266.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 rtos_pro\esp8266.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 rtos_pro\esp8266.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 rtos_pro\esp8266.o: ..\Drivers\NET\esp8266.h
-rtos_pro\esp8266.o: ..\Drivers\MyMCU-F103\driver_timer.h
-rtos_pro\esp8266.o: ..\Drivers\MyMCU-F103\driver_uart.h
-rtos_pro\esp8266.o: ..\Drivers\MyMCU-F103\driver_oled.h
+rtos_pro\esp8266.o: ../Drivers/MyMCU-F103/driver_timer.h
+rtos_pro\esp8266.o: ../Drivers/MyMCU-F103/driver_uart.h
+rtos_pro\esp8266.o: ../Drivers/MyMCU-F103/driver_oled.h
 rtos_pro\esp8266.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\string.h
 rtos_pro\esp8266.o: D:\Stm32\kile5\core\ARM\ARMCC\Bin\..\include\stdio.h
